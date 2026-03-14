@@ -1,0 +1,19 @@
+{
+  "mappings": {
+    "幼师论文专版": "thesis_writing",
+    "工程管理": "engineering_management",
+    "财经交易": "financial_analysis",
+    "技术部署": "tech_operations",
+    "网站/SEO": "web_development",
+    "系统管理": "system_administration",
+    "生活事务": "life_assistance"
+  },
+  "integration_rules": {
+    "role_switch_triggers_module_switch": true,
+    "preserve_role_context_in_module": true,
+    "synchronize_memory_paths": true,
+    "fallback_module": "general_temporary"
+  },
+  "version": "1.0",
+  "last_updated": "2026-03-14T00:00:00Z"
+}

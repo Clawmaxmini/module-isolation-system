@@ -1,0 +1,261 @@
+# Module Isolation System - Usage Examples
+
+## Example 1: Basic Module Judgment
+
+```bash
+# Test module judgment with different messages
+./scripts/judge_module.sh "How to write a literature review?"
+# Output: thesis_writing
+
+./scripts/judge_module.sh "工程月报应该包含哪些内容?"
+# Output: engineering_management
+
+./scripts/judge_module.sh "黄金价格趋势分析"
+# Output: financial_analysis
+
+./scripts/judge_module.sh "Docker容器如何配置网络"
+# Output: tech_operations
+
+./scripts/judge_module.sh "周末旅行计划"
+# Output: life_assistance
+```
+
+## Example 2: Workflow Enforcement
+
+```bash
+# Process a message with full workflow
+./scripts/workflow_enforcer.sh "How to structure a research paper?"
+
+# Expected output:
+# 🚀 Starting module isolation workflow
+# ====================================
+# 1. 🔍 Module judgment...
+#    Detected: thesis_writing
+#    Current: None
+# 2. 🆕 New topic classification...
+#    Classified as: thesis_writing
+# 3. 📂 Setting module...
+# 4. 💬 Generating response...
+#    Context: Module thesis_writing
+# 5. 📁 Ready for archiving...
+#    Will archive to: memory/modules/thesis_writing/mid_term/archive/
+# 
+# ✅ Workflow complete
+#    Final module: thesis_writing
+```
+
+## Example 3: Module Switching
+
+```bash
+# First message
+./scripts/workflow_enforcer.sh "论文文献综述怎么写?"
+
+# Second message (different module)
+./scripts/workflow_enforcer.sh "项目进度报告模板"
+
+# Expected output for second message:
+# 🚀 Starting module isolation workflow
+# ====================================
+# 1. 🔍 Module judgment...
+#    Detected: engineering_management
+#    Current: thesis_writing
+# 2. 🔄 Module switch detected...
+#    ⚠️  Switching from thesis_writing to engineering_management
+#    Loading engineering_management memory...
+# 3. 📂 Setting module...
+# 4. 💬 Generating response...
+#    Context: Module engineering_management
+# 5. 📁 Ready for archiving...
+#    Will archive to: memory/modules/engineering_management/mid_term/archive/
+# 
+# ✅ Workflow complete
+#    Final module: engineering_management
+```
+
+## Example 4: Pollution Detection
+
+```bash
+# Check for memory pollution
+./scripts/pollution_detector.sh
+
+# Expected output if clean:
+# 🔍 Checking for cross-module references...
+# Checking thesis_writing for patterns: engineering|finance|tech|工程|金融|技术
+# ✅ thesis_writing: No pollution detected
+# Checking engineering_management for patterns: thesis|finance|life|论文|金融|生活
+# ✅ engineering_management: No pollution detected
+# ...
+# ✅ No memory pollution detected
+
+# Expected output if pollution found:
+# ❌ Found 3 potential pollution cases in thesis_writing
+#    Examples:
+#    - memory/modules/thesis_writing/long_term/notes.md:15:参考工程项目的管理方法
+#    - memory/modules/thesis_writing/temp/session_20260314.md:8:金融数据分析显示
+# 🚨 Pollution detected! Report saved to: /tmp/pollution_report_20260314_143035.txt
+```
+
+## Example 5: Health Report
+
+```bash
+# Generate health report
+./scripts/health_report.sh
+
+# Expected output:
+# 🧪 Generating health report...
+# 
+# ✅ Health report generated: module_health_report_20260314_143045.md
+# 
+# 📋 Report Summary:
+# -----------------
+# • Modules: 5
+# • Total Files: 47
+# • Total Size: 2350 KB
+# 
+# 🔍 Running pollution check...
+# ✅ Pollution: None detected
+# 
+# 📊 Full report available in: module_health_report_20260314_143045.md
+# 💡 Review recommendations for system maintenance
+```
+
+## Example 6: Custom Module Creation
+
+```bash
+# 1. Create custom module directory
+mkdir -p memory/modules/custom_business/long_term
+mkdir -p memory/modules/custom_business/mid_term/archive
+mkdir -p memory/modules/custom_business/temp/sessions
+mkdir -p memory/modules/custom_business/config
+
+# 2. Create config file
+cat > memory/modules/custom_business/config/module_config.json << EOF
+{
+  "module_name": "custom_business",
+  "description": "Custom business domain for specialized tasks",
+  "keywords": ["custom", "business", "specialized", "domain", "专属", "业务"],
+  "created": "$(date -Iseconds)",
+  "last_accessed": "$(date -Iseconds)",
+  "access_count": 0
+}
+EOF
+
+# 3. Update judge_module.sh to recognize new module
+# Add to judge_module() function:
+# elif [[ "$lower_message" =~ (custom|business|specialized|domain|专属|业务) ]]; then
+#     echo "custom_business"
+```
+
+## Example 7: Integration with Python
+
+```python
+# Basic Python integration example
+import subprocess
+
+def process_with_isolation(message):
+    """Process message using module isolation system"""
+    
+    # Use shell script for module judgment
+    module = subprocess.run(
+        ["./scripts/judge_module.sh", message],
+        capture_output=True,
+        text=True
+    ).stdout.strip()
+    
+    print(f"Module: {module}")
+    
+    # Use workflow enforcer
+    result = subprocess.run(
+        ["./scripts/workflow_enforcer.sh", message],
+        capture_output=True,
+        text=True
+    )
+    
+    print(result.stdout)
+    
+    return module
+
+# Test
+process_with_isolation("How to write an abstract?")
+```
+
+## Example 8: Batch Processing
+
+```bash
+#!/bin/bash
+# batch_process.sh
+
+messages=(
+    "文献综述的结构"
+    "工程进度报告模板"
+    "黄金市场分析"
+    "Docker网络配置"
+    "旅行计划建议"
+)
+
+for msg in "${messages[@]}"; do
+    echo "========================================="
+    echo "Processing: $msg"
+    echo "-----------------------------------------"
+    
+    ./scripts/workflow_enforcer.sh "$msg" > /dev/null 2>&1
+    
+    module=$(cat .current_module 2>/dev/null || echo "unknown")
+    echo "Processed in module: $module"
+    echo ""
+    
+    sleep 1
+done
+
+echo "========================================="
+echo "Batch processing complete"
+echo "Module switch history:"
+cat .module_switch_history 2>/dev/null || echo "No switch history"
+```
+
+## Example 9: Real-world Scenario
+
+**Scenario**: User is working on multiple projects
+
+```bash
+# Morning: Academic work
+./scripts/workflow_enforcer.sh "帮我写论文的引言部分"
+# -> thesis_writing module
+
+# Afternoon: Engineering project
+./scripts/workflow_enforcer.sh "项目进度报告需要哪些数据"
+# -> engineering_management module (with switch notification)
+
+# Evening: Personal planning
+./scripts/workflow_enforcer.sh "周末去哪里旅行比较好"
+# -> life_assistance module (with switch notification)
+
+# Next day: Continue academic work
+./scripts/workflow_enforcer.sh "论文的方法论部分怎么写"
+# -> thesis_writing module (with switch notification)
+
+# Check system health
+./scripts/health_report.sh
+# Shows: 3 modules used, 15 files created, no pollution
+```
+
+## Example 10: Troubleshooting
+
+```bash
+# Problem: Module judgment not working correctly
+# Solution: Update keywords in judge_module.sh
+
+# Problem: Memory pollution detected
+# Solution: Run cleanup and review files
+./scripts/pollution_detector.sh
+# Review the report, clean contaminated files
+
+# Problem: System running slow
+# Solution: Clean temp files
+find memory/modules/*/temp -type f -mtime +7 -delete
+
+# Problem: Need to add new module
+# Solution: Follow custom module creation example
+```
+
+These examples demonstrate the flexibility and power of the Module Isolation System for managing multiple domains in AI assistants.

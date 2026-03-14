@@ -1,0 +1,21 @@
+{
+  "module_name": "module_name_here",
+  "description": "Module description here",
+  "keywords": ["keyword1", "keyword2", "keyword3"],
+  "created": "2026-03-14T00:00:00Z",
+  "last_accessed": "2026-03-14T00:00:00Z",
+  "access_count": 0,
+  "memory_size": 0,
+  "settings": {
+    "isolation_level": "strict",
+    "auto_cleanup_days": 7,
+    "max_temp_files": 100,
+    "archive_older_than_days": 30
+  },
+  "rules": {
+    "allow_cross_references": false,
+    "require_keyword_match": true,
+    "auto_classify_new_topics": true,
+    "notify_on_switch": true
+  }
+}
