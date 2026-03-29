@@ -1,0 +1,19 @@
+{
+  "app": {
+    "name": "OpenClaw-MT5-Bridge",
+    "env": "prod",
+    "host": "0.0.0.0",
+    "port": 8080
+  },
+  "mt5": {
+    "login": 12345678,
+    "server": "YourBroker-Server",
+    "path": "C:\\Program Files\\MetaTrader 5\\terminal64.exe",
+    "timeout_ms": 10000,
+    "deviation": 20,
+    "magic": 910001
+  },
+  "future": {
+    "multi_account_support": "Use account_id and adapter-per-account map in TradingService"
+  }
+}
